@@ -2,6 +2,7 @@ package com.contents.stg.fermagente.view;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,13 @@ import java.text.SimpleDateFormat;
 public class FeedRecyclerAdapter extends RecyclerView.Adapter<FeedHolder> implements Observer<Boolean> {
 
     private LayoutInflater inflater;
+    private static DisplayMetrics metrics;
+    public static DisplayMetrics requestDisplayMetrics() { return metrics; }
 
     public FeedRecyclerAdapter(Context context) {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         PostCollection.instance().subscribe(this);
+        metrics = context.getResources().getDisplayMetrics();
     }
 
     @Override
@@ -33,8 +37,9 @@ public class FeedRecyclerAdapter extends RecyclerView.Adapter<FeedHolder> implem
         Post post = PostCollection.instance().get(position);
         holder.getCommentView().setText(post.getComment());
         holder.getPlaceView().setText(post.getPlace());
-        holder.getTimeView().setText(new SimpleDateFormat("hh:mm").format(post.getDate()));
+        holder.getTimeView().setText(new SimpleDateFormat("HH:mm").format(post.getDate()));
         holder.getStarsView().setText("" + post.getStars());
+        holder.setImage(post.getPhoto());
     }
 
     @Override

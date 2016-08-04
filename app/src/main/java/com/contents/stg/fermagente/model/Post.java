@@ -1,5 +1,6 @@
 package com.contents.stg.fermagente.model;
 
+import java.io.File;
 import java.util.Date;
 
 public class Post {
@@ -7,6 +8,7 @@ public class Post {
     private String comment, place;
     private Date date;
     private int stars;
+    private File photo;
 
     public String getComment() {
         return comment;
@@ -23,4 +25,7 @@ public class Post {
 
     public int getStars() { return stars; }
     public void setStars(int stars) { this.stars = stars; }
+
+    public File getPhoto() { return photo; }
+    public void setPhoto(File photo) { this.photo = photo; }
 }

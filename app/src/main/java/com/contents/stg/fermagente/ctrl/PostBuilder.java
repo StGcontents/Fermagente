@@ -4,6 +4,7 @@ import android.location.Address;
 
 import com.contents.stg.fermagente.model.Post;
 
+import java.io.File;
 import java.util.Date;
 
 public class PostBuilder extends Builder<Post> {
@@ -28,6 +29,8 @@ public class PostBuilder extends Builder<Post> {
         object.setStars(rating);
     }
 
+    public void buildPhoto(File photo) { object.setPhoto(photo); }
+
     @Override
     public Post retrieveObject() {
         return object;
@@ -35,6 +38,6 @@ public class PostBuilder extends Builder<Post> {
 
     @Override
     public boolean isReady() {
-        return object.getPlace() != null;
+        return object.getPlace() != null && object.getPhoto() != null;
     }
 }

@@ -10,4 +10,5 @@
     <string name="gps_snackbar_alert">GPS is not enabled.</string>
     <string name="gps_snackbar_action">ENABLE</string>
     <string name="gps_do_recover">Recover position</string>
+    <string name="gps_snackbar_nophoto">Take a picture with The Man first!</string>
 </resources>

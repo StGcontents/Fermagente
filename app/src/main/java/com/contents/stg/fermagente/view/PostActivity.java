@@ -124,7 +124,7 @@ public class PostActivity extends AppCompatActivity implements LocationListener,
         });
 
         progress = new ProgressBar(this, null, android.R.attr.progressBarStyle);
-        progress.setLayoutParams(new LinearLayout.LayoutParams(placeButton.getWidth(), placeButton.getHeight(), Gravity.CENTER_VERTICAL));
+        progress.setLayoutParams(new LinearLayout.LayoutParams(pixels, pixels, Gravity.CENTER_VERTICAL));
         progress.setIndeterminate(true);
         progress.setBackground(null);
         progress.setIndeterminateTintMode(PorterDuff.Mode.SRC_ATOP);
@@ -146,6 +146,7 @@ public class PostActivity extends AppCompatActivity implements LocationListener,
 
         // Save a file: path for use with ACTION_VIEW intents
         photoPath = image.getAbsolutePath();
+        builder.buildPhoto(new File(photoPath));
         return image;
     }
 
@@ -159,10 +160,6 @@ public class PostActivity extends AppCompatActivity implements LocationListener,
                 // TODO: Handle exception
             }
             if (photoFile != null) {
-                /* Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.contents.stg.fermagente",
-                        photoFile);
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI); */
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
                 startActivityForResult(cameraIntent, intentCameraCode);
             }
@@ -194,11 +191,17 @@ public class PostActivity extends AppCompatActivity implements LocationListener,
         int id = item.getItemId();
         if (id == R.id.action_confirm) {
             if (builder.isReady()) {
-                builder.buildComment(editComment.getText().toString());
-                builder.buildDate(new Date());
-                builder.buildRating(4);
+                if (photoPath != null) {
+                    builder.buildComment(editComment.getText().toString());
+                    builder.buildDate(new Date());
+                    builder.buildRating(4);
 
-                PostCollection.instance().add(builder.retrieveObject());
+                    PostCollection.instance().add(builder.retrieveObject());
+                }
+                else {
+                    Snackbar.make(positionLayout, R.string.gps_snackbar_nophoto, Snackbar.LENGTH_SHORT).show();
+                    return false;
+                }
             }
             else {
                 Snackbar.make(positionLayout, R.string.gps_snackbar_wait, Snackbar.LENGTH_SHORT).show();
