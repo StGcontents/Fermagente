@@ -136,7 +136,8 @@ public class PostActivity extends AppCompatActivity implements LocationListener,
                 builder.buildRating(4);
 
                 PostCollection.instance().add(builder.retrieveObject());
-            } else {
+            }
+            else {
                 Snackbar.make(positionLayout, R.string.gps_snackbar_wait, Snackbar.LENGTH_SHORT).show();
                 return false;
             }
