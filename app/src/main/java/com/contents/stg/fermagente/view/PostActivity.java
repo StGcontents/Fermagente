@@ -13,11 +13,14 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -28,8 +31,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -40,6 +45,8 @@ import com.contents.stg.fermagente.ctrl.PostBuilder;
 import com.contents.stg.fermagente.ctrl.Subject;
 import com.contents.stg.fermagente.model.PostCollection;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -63,6 +70,12 @@ public class PostActivity extends AppCompatActivity implements LocationListener,
         }
     };
 
+
+    private Button photoButton;
+    private ImageView photoShower;
+    private int intentCameraCode = 1;
+    private String photoPath;
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +87,16 @@ public class PostActivity extends AppCompatActivity implements LocationListener,
             toolbar.setNavigationIcon(R.mipmap.clear);
 
         editComment = (EditText) findViewById(R.id.edit_comment);
+
+        photoButton = (Button) findViewById(R.id.button);
+        photoShower = (ImageView) findViewById(R.id.imageView);
+
+        photoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startCameraIntent();
+            }
+        });
 
         positionLayout = (LinearLayout) findViewById(R.id.layout_position);
         locationTextView = new TextView(this);
@@ -110,6 +133,46 @@ public class PostActivity extends AppCompatActivity implements LocationListener,
 
         manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         registerForLocationUpdates();
+    }
+
+    private File createImageFile() throws IOException {
+        String imageFileName = "SelfieEdo";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        photoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    private void startCameraIntent() {
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // TODO: Handle exception
+            }
+            if (photoFile != null) {
+                /* Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.contents.stg.fermagente",
+                        photoFile);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI); */
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+                startActivityForResult(cameraIntent, intentCameraCode);
+            }
+        }
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == intentCameraCode && resultCode == RESULT_OK) {
+            photoShower.setImageURI( Uri.parse(photoPath));
+        }
     }
 
     @Override
