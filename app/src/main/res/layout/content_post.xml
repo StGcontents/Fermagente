@@ -19,4 +19,24 @@
         android:maxLength="140"
         android:layout_margin="4dp" />
 
+    <LinearLayout
+        android:id="@+id/layout_position"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/place_button"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@mipmap/place_small"
+            android:background="@null"/>
+
+    </LinearLayout>
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

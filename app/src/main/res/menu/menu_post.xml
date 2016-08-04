@@ -6,7 +6,7 @@
     <item android:id="@+id/action_confirm"
         android:title="@string/action_settings"
         android:orderInCategory="100"
-        android:icon="@mipmap/star_small"
+        android:icon="@mipmap/done"
         app:showAsAction="always" />
 
 </menu>

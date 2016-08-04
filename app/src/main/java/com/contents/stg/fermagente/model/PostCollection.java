@@ -6,7 +6,7 @@ import com.contents.stg.fermagente.ctrl.Subject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PostCollection extends ArrayList<Post> implements Subject {
+public class PostCollection extends ArrayList<Post> implements Subject<Boolean> {
 
     private static PostCollection me;
     private PostCollection() {
@@ -22,14 +22,14 @@ public class PostCollection extends ArrayList<Post> implements Subject {
     @Override
     public boolean add(Post object) {
         add(0, object);
-        notifyObservers();
+        notifyObservers(true);
         return true;
     }
 
     @Override
     public boolean remove(Object object) {
         boolean result = super.remove(object);
-        notifyObservers();
+        notifyObservers(false);
         return result;
     }
 
@@ -44,8 +44,10 @@ public class PostCollection extends ArrayList<Post> implements Subject {
     }
 
     @Override
-    public void notifyObservers() {
+    public void notifyObservers(Boolean wasAdded) {
         for (Observer observer : observers)
-            observer.alert();
+            observer.alert(wasAdded);
     }
+
+    @Override public void notifyFailed() { }
 }

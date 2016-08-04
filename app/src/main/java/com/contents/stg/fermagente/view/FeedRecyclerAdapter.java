@@ -13,7 +13,7 @@ import com.contents.stg.fermagente.model.PostCollection;
 
 import java.text.SimpleDateFormat;
 
-public class FeedRecyclerAdapter extends RecyclerView.Adapter<FeedHolder> implements Observer {
+public class FeedRecyclerAdapter extends RecyclerView.Adapter<FeedHolder> implements Observer<Boolean> {
 
     private LayoutInflater inflater;
 
@@ -48,8 +48,12 @@ public class FeedRecyclerAdapter extends RecyclerView.Adapter<FeedHolder> implem
     }
 
     @Override
-    public void alert() {
-        System.out.println(getItemCount());
-        notifyDataSetChanged();
+    public void alert(Boolean wasAdded) {
+        if (wasAdded)
+            notifyItemInserted(0);
+        else
+            notifyItemRemoved(getItemCount());
     }
+
+    @Override public void alertFailed() { }
 }

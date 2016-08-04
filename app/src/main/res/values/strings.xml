@@ -1,10 +1,13 @@
 <resources>
     <string name="app_name">Fermagente</string>
     <string name="action_settings">Settings</string>
-    <string name="section_format">Hello World from section: %1$d</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_post">PostActivity</string>
-    <string name="comment_hint">Inserisci un commento</string>
+    <string name="comment_hint">Say something!</string>
+    <string name="gps_failed">Failed to recover your position, please try again.</string>
+    <string name="gps_recovering">Recovering your position…</string>
+    <string name="gps_snackbar_wait">Wait for GPS to track you down mothafacka</string>
+    <string name="gps_snackbar_alert">GPS is not enabled.</string>
+    <string name="gps_snackbar_action">ENABLE</string>
+    <string name="gps_do_recover">Recover position</string>
 </resources>

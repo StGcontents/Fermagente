@@ -1,5 +1,6 @@
 package com.contents.stg.fermagente.ctrl;
 
-public interface Observer {
-    void alert() ;
+public interface Observer<T> {
+    void alert(T state) ;
+    void alertFailed() ;
 }
